@@ -16,6 +16,12 @@
 
 <img src="./data-transformation.png" alt="Data Transformation" width="800" height="300">
 
+
+#### Train Model
+
+<img src="./train-model.png" alt="Train Model" width="800" height="300">
+
+
 ---
 
 ### Steps to Set Up and Connect to a Free MongoDB Cluster
