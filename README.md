@@ -2,13 +2,19 @@
 
 ##### Project Structure
 
-<img src="Project-structure.png" alt="Alt Text" width="800" height="300">
+<img src="project-structure.png" alt="Alt Text" width="800" height="300">
 
 ##### Data Ingestion
 
-<img src="Data_ingestion.png" alt="Alt Text" width="800" height="300">
+<img src="data_ingestion.png" alt="Alt Text" width="800" height="300">
 
+##### Data Validation
 
+<img src="data-validation.png" alt="Alt Text" width="800" height="300">
+
+##### Data Transformation
+
+<img src="data-transformation.png" alt="Alt Text" width="800" height="300">
 
 
 
