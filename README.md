@@ -148,3 +148,53 @@ To run the prediction pipeline:
     - Select the test.csv file.
 4. Click on the Execute button.
 After execution, you will be able to see the prediction results.
+
+### Step: Connect to AWS S3 Bucket
+
+#### 1. Connect to Your AWS Account
+- Log in to your AWS account.
+
+#### 2. Create an IAM User
+1. Go to the **IAM** service and create a new user with the name **testsecurity**.
+2. Click **Next**.
+
+#### 3. Assign Permissions
+1. In the **Permission Options**, choose **Attach policies directly**.
+2. Select the **AdministratorAccess** policy.
+3. Click **Next**.
+
+#### 4. Review and Create
+- On the **Review and Create** page, click **Create User** to finish creating the user.
+
+#### 5. Generate Access Keys
+1. After creation, select the **testsecurity** user.
+2. Navigate to the **Security Credentials** tab.
+3. Under **Access Keys**, click **Create Access Keys**.
+4. Choose **Command Line Interface (CLI)** during setup, confirm, and click **Next**.
+5. On the **Set Description Tag** page, click **Create Access** to generate the access and secret keys.
+
+#### 6. Configure AWS CLI
+To use the keys, open a terminal in your project folder (e.g., in VS Code), and run:
+
+> aws configure
+
+You will be prompted to enter the following information:
+- AWS Access Key ID: Enter the access key.
+- AWS Secret Access Key: Enter the secret key.
+- Default region name: Press Enter to leave it empty or specify a region.
+- Default output format: Press Enter to leave it empty.
+
+#### 7. Verify Connection and Start the App
+Once the connection to your AWS S3 bucket is established, run the application:
+> uvicorn app:app --reload
+
+#### 8. Run the Training Model
+To run the training model:
+
+    1. Access the Swagger API documentation at http://127.0.0.1:8000/docs.
+    2. In the default section, select the training endpoint.
+    3. Click on the Try it out button.
+    4. Execute the request to start the training pipeline.
+
+#### 9. Check S3 Bucket
+Finally, you can view the artifacts and final model in your S3 bucket.
