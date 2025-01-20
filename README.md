@@ -126,3 +126,25 @@ To run the training model:
 1. Choose the default.
 2. Click on the "Try it out" button.
 3. Click on the "Execute" button to run the training pipeline.
+
+### Step: Use FastAPI to Predict
+
+Start the FastAPI server by running the following command:
+
+> uvicorn app:app --reload
+
+Access the Swagger API documentation at:
+
+> http://127.0.0.1:8000/docs
+
+In the default section, you will find options for both training and prediction.
+
+To run the prediction pipeline:
+
+1. Select the predict endpoint.
+2. Click on the Try it out button.
+3. Choose a file from the project folder:
+    - Navigate to the valid_data folder.
+    - Select the test.csv file.
+4. Click on the Execute button.
+After execution, you will be able to see the prediction results.
