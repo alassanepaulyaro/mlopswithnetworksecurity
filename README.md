@@ -198,3 +198,119 @@ To run the training model:
 
 #### 9. Check S3 Bucket
 Finally, you can view the artifacts and final model in your S3 bucket.
+
+
+### Step: Step: Docker Image Push to AWS ECR
+To push your Docker image to AWS ECR, follow these steps:
+
+#### 1. Create a New Repository in AWS ECR
+1. Go to the Amazon Elastic Container Registry (ECR) dashboard.
+2. Click on "Create repository" and enter the following details:
+    - Repository name: networksecurity
+    - Image tag mutability: Choose Mutable
+    - Encryption: Choose AES-256
+3. Click "Create repository" to create the new repository.
+4. After creation, copy the AWS ECR URL.
+
+#### 2. Create Actions Secrets and Variables
+1. Go to your project settings.
+2. Click on "Security" under the settings menu.
+3. Click on "Actions" and then click on "Secrets".
+4. Add the following new secret repository secrets:
+    - **`AWS_ECR_LOGIN_URI`**: The ECR URI you copied.
+    - **`AWS_ACCESS_KEY_ID`**: Your AWS Access Key.
+    - **`AWS_SECRET_ACCESS_KEY`**: Your AWS Secret Access Key.
+    - **`AWS_REGION`**: The AWS region where your ECR is located.
+    - **`ECR_REPOSITORY_NAME`**: The name of your ECR repository.
+
+### Step: Setting Up an EC2 Instance for GitHub Actions Runner
+
+#### Launch an EC2 Instance
+1. Go to your EC2 dashboard and click on **Instances Running**.
+2. Click on **Launch an Instance**.
+3. Add a name and tags:
+   - Name: `networksecurity`
+4. Choose **Application and OS Images**:
+   - Select: `Ubuntu`.
+5. Create or use an existing **Key Pair**.
+6. On **Network Settings**, ensure the following are checked:
+   - Allow SSH traffic from anywhere.
+   - Allow HTTPS traffic from the internet.
+   - Allow HTTP traffic from the internet.
+
+#### After Instance Creation
+1. Go to the **Instances** tab and click on your **Instance ID**.
+2. Click on **Connect**, use the default configuration, and click on **Connect**.
+
+---
+
+#### Connect to Your Instance
+Run the following commands on the EC2 terminal:
+
+> sudo apt-get update -y
+> sudo apt-get upgrade -y
+
+#### Install Docker on the EC2 terminal
+Download the Docker installation script
+> curl -fsSL https://get.docker.com -o get-docker.sh
+
+Run the script to install Docker
+> sudo sh get-docker.sh
+
+Add your user to the Docker group
+> sudo usermod -aG docker ubuntu
+
+Apply group changes
+> newgrp docker
+
+#### Configure a Self-Hosted GitHub Runner
+
+    1. Go to your project's GitHub Repository > Settings > Actions > Runners.
+    2. Click on Add New Self-Hosted Runner.
+    3. Choose Runner Image: Linux.
+    4. Follow the displayed instructions. Run the following commands on the EC2 terminal:
+
+#### Download the Runner on the EC2 terminal
+Create a folder for the runner
+> mkdir actions-runner && cd actions-runner
+
+Download the latest runner package
+> curl -o actions-runner-linux-x64-2.321.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.321.0/actions-runner-linux-x64-2.321.0.tar.gz
+
+Optional: Validate the hash
+> echo "ba46ba7ce3a4d7236b16fbe44419fb453bc08f866b24f04d549ec89f1722a29e  actions-runner-linux-x64-2.321.0.tar.gz" | shasum -a 256 -c
+
+Extract the installer
+> tar xzf ./actions-runner-linux-x64-2.321.0.tar.gz
+
+
+#### Configure the Runner on the EC2 terminal
+Start the configuration process
+> ./config.sh --url https://github.com/alassanepaulyaro/mlopswithnetworksecurity --token AF6UF7YAIUXKNI4WTLI6YHTHR2AOG
+
+During Configuration:
+- Enter the name of the runner group to add this runner to: [Press Enter for Default]
+- Enter the name of the runner: self-hosted
+- Enter any additional labels (e.g., label-1,label-2): [Press Enter to skip]
+- Enter the name of the work folder: [Press Enter for _work]
+
+#### Start the Runner on the EC2 terminal
+Run the runner
+> ./run.sh
+
+####  Verify Runner Status
+1. Go back to Runners in your GitHub repository settings.
+2. You should see the status of the runner (self-hosted) as Idle.
+
+#### EC2 - Update Security Group and Access Flask API
+
+1. On your EC2 instance, go to the **Security Group** associated with your instance.
+2. Click on **Edit Inbound Rules**.
+3. Add a new inbound rule with the following details:
+   - **Type**: Custom TCP
+   - **Port Range**: 8080
+   - **Source**: 0.0.0.0/0 (or a more restrictive IP range for better security).
+4. Save the changes.
+
+### Access the Flask API
+After updating the security group, you can access your Flask API running on the EC2 instance using <EC2_PUBLIC_IP>:8080
